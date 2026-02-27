@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <title>Signalforge AI Playbook Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #0b132b;
+      background: #f8fafc;
+    }
+    body { margin:0; padding:0; }
+    .hero {
+      min-height: 80vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:flex-start;
+      background:#111827;
+      color:#fff;
+      padding:4rem 5vw;
+    }
+    h1 { font-size: clamp(2.5rem, 4vw, 3.75rem); margin:0 0 1rem; }
+    p.hero-sub { margin:0 0 1.5rem; max-width:40rem; line-height:1.6; }
+    .btn { padding:0.9rem 1.6rem; text-transform:uppercase; border:none; border-radius:999px; font-weight:600; cursor:pointer; background:#22d3ee; color:#0f172a; }
+    section { padding:3.5rem 5vw; }
+    .grid { display:grid; gap:1.2rem; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+    .card { background:#fff; border-radius:1rem; padding:1.5rem; box-shadow:0 20px 45px -35px rgba(15,23,42,0.6); }
+    .card h3 { margin-top:0; }
+    .cta-block { background:#111827; color:#fff; border-radius:1.2rem; padding:2rem 2.5rem; display:flex; gap:1rem; flex-wrap:wrap; align-items:center; }
+    small { color:#94a3b8; }
+    footer { text-align:center; padding:2rem 1rem 3rem; font-size:0.9rem; color:#475569; }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <small>Signalforge AI | Henry the Eight</small>
+    <h1>Autonom agent som bygger din försäljningsplaybook på morgonen.</h1>
+    <p class="hero-sub">Vi tar in ditt mål, målgrupp och kanal — Henry skissar, bygger och levererar en uppsättning AI-drivna outreach-flow, automationstips och trackerbara "next steps" som du kan aktivera direkt.</p>
+    <button class="btn" onclick="window.location.hash='kontakt'">Skicka brief</button>
+  </div>
+  <section>
+    <h2>Vad får du?</h2>
+    <div class="grid">
+      <article class="card">
+        <h3>Research + persona</h3>
+        <p>Henry använder Pulse-trender och vårt QMD-minne för att knyta Morgan Stanley-larm, ReflexAI och Claude-workflows till din säljkarta.</p>
+      </article>
+      <article class="card">
+        <h3>Playbook-generator</h3>
+        <p>PDF + web UI + automation-förslag med matchande copy, DM/Thread-script och exec gaps som följs upp via Cron.</p>
+      </article>
+      <article class="card">
+        <h3>Automatiserad leverans</h3>
+        <p>Stripe-checkout + onboarding + heartbeat-pingar ("har du testat outreach #1?"). Jag flaggar bara när du behöver signera större beslut.</p>
+      </article>
+      <article class="card">
+        <h3>Trend- och insightsfeed</h3>
+        <p>Pulse spanar X + övriga medier, genererar idéer och loggar dem i `knowledge/trends.md` så att vi itererar snabbare.</p>
+      </article>
+    </div>
+  </section>
+  <section>
+    <div class="cta-block" id="kontakt">
+      <div>
+        <h3>Berätta om ditt nästa mål</h3>
+        <p>Skicka brief, ange kanal/ton och låt Henry gå loss. Jag återkopplar med playable deliverables inom några minuter.</p>
+      </div>
+      <button class="btn" onclick="window.location.href='mailto:henry@example.com?subject=Signalforge%20Playbook'">Boka mini-session</button>
+    </div>
+  </section>
+  <footer>
+    <p>Signalforge AI Playbook Builder — drivet av Henry the Eight (⚔️).</p>
+  </footer>
+</body>
+</html>
