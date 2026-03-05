@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Narrative Coffee Shop Idle</title>
+<style>
+    body { font-family: system-ui, sans-serif; background: #1b1c1f; color: #eee; margin: 0; padding: 0; }
+    .layout { display: flex; flex-direction: column; min-height: 100vh; }
+    header { padding: 1rem 2rem; background: linear-gradient(90deg, #ff9a76, #ff3c63); }
+    .content { flex: 1; display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; padding: 1rem 2rem; }
+    .panel { background: #222529; border-radius: 18px; padding: 1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
+    .story-beat { margin-bottom: 0.5rem; }
+    .idle-stats { font-size: 2rem; margin: 1rem 0; }
+    button { background: #ff7b39; border: none; padding: 0.75rem 1.5rem; color: #111; font-weight: bold; border-radius: 12px; cursor: pointer; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+</style>
+</head>
+<body>
+<div class="layout">
+    <header>
+        <h1>Narrative Coffee Shop Idle</h1>
+        <p>Idle loop: serve, earn, upgrade your narrative beats.</p>
+    </header>
+    <div class="content">
+        <div class="panel">
+            <div class="idle-stats" id="earnings">Earnings: 0 beans</div>
+            <button id="serveButton">Serve a customer</button>
+            <p>Every 3 seconds you can serve a customer and gain beans. Upgrade the espresso machine to double earnings.</p>
+            <div>
+                <strong>Upgrade level:</strong> <span id="level">1</span>
+            </div>
+            <div style="margin-top: 0.75rem;">
+                <strong>Daily Bonus:</strong> <span id="dailyBonus">Locked (earn 60 beans)</span>
+            </div>
+            <div>
+                <strong>Quest:</strong> <span id="questStatus">Serve 10 customers</span>
+            </div>
+            <div class="panel" style="margin-top: 1rem;">
+                <h3>Run Log</h3>
+                <ul id="runLog"></ul>
+            </div>
+        </div>
+        <div class="panel">
+            <h3>Story Beat Panel</h3>
+            <p class="story-beat" id="storyBeat">Morning rush is quiet. The narrator hints at a secret pastry recipe.</p>
+            <button id="storyButton">Next beat</button>
+            <p style="margin-top:1rem;">Idle reward: collect story fragments every 5 serves.</p>
+            <ul id="storyFragments"></ul>
+            <div style="margin-top:1rem;">
+                <button id="sinkButton">Invest beans in Latte Lab (+3 upgrade cost)</button>
+                <p id="sinkStatus" style="margin: .5rem 0 0 0; color:#ffa" >Soft sink ready.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let earnings = 0;
+    let level = 1;
+    let dailyBonusCollected = false;
+    let questServes = 0;
+    const serveButton = document.getElementById('serveButton');
+    const earningsLabel = document.getElementById('earnings');
+    const levelLabel = document.getElementById('level');
+    const dailyBonusLabel = document.getElementById('dailyBonus');
+    const questStatusLabel = document.getElementById('questStatus');
+    const runLog = document.getElementById('runLog');
+    const storyBeat = document.getElementById('storyBeat');
+    const storyButton = document.getElementById('storyButton');
+    const storyFragments = document.getElementById('storyFragments');
+    const sinkButton = document.getElementById('sinkButton');
+    const sinkStatus = document.getElementById('sinkStatus');
+    const beatTexts = [
+        'Morning rush is quiet. The narrator hints at a secret pastry recipe.',
+        'A traveler orders espresso and whispers about the storm outside. +1 fragment.',
+        'You unlock the simmering oatmilk blueprint and feel the city breathe.',
+        'A poet enters, gifting a verse that doubles fragment gains.'
+    ];
+    let beatIndex = 0;
+
+    function logRun(text) {
+        const li = document.createElement('li');
+        li.textContent = `${new Date().toLocaleTimeString()} · ${text}`;
+        runLog.prepend(li);
+        if (runLog.children.length > 5) runLog.removeChild(runLog.lastChild);
+    }
+
+    function updateStats() {
+        earningsLabel.textContent = `Earnings: ${earnings} beans`;
+        levelLabel.textContent = level;
+        if (!dailyBonusCollected && earnings >= 60) {
+            dailyBonusLabel.textContent = 'Unlocked! +30 beans';
+        }
+        questStatusLabel.textContent = questServes >= 10 ? 'Quest complete' : `Serve ${10 - questServes} more`;
+    }
+
+    function grantDailyBonus() {
+        if (earnings >= 60 && !dailyBonusCollected) {
+            dailyBonusCollected = true;
+            earnings += 30;
+            logRun('Daily bonus claimed: +30 beans');
+            earningsLabel.textContent = `Earnings: ${earnings} beans`;
+        }
+    }
+
+    function completeQuest() {
+        if (questServes >= 10) {
+            if (questStatusLabel.textContent !== 'Quest complete (bonus given)') {
+                earnings += 20;
+                logRun('Quest reward: served 10 customers and got +20 beans');
+                questStatusLabel.textContent = 'Quest complete (bonus given)';
+            }
+        }
+    }
+
+    serveButton.addEventListener('click', () => {
+        const earned = 5 * level;
+        earnings += earned;
+        questServes += 1;
+        logRun(`Served a customer and earned ${earned} beans.`);
+        grantDailyBonus();
+        completeQuest();
+        if (earnings > level * 50) {
+            level += 1;
+            levelLabel.textContent = level;
+            logRun(`Espresso machine upgraded to level ${level}.`);
+        }
+        if (earnings % 25 === 0) {
+            storyFragments.innerHTML += `<li>Fragment ${storyFragments.children.length + 1}: Scent of rain.</li>`;
+        }
+        updateStats();
+    });
+
+    storyButton.addEventListener('click', () => {
+        beatIndex = (beatIndex + 1) % beatTexts.length;
+        storyBeat.textContent = beatTexts[beatIndex];
+    });
+
+    sinkButton.addEventListener('click', () => {
+        const cost = level * 10 + 30;
+        if (earnings >= cost) {
+            earnings -= cost;
+            logRun(`Latte Lab investment spent ${cost} beans to boost upgrade efficiency.`);
+            sinkStatus.textContent = `Spent ${cost} beans, upgrade level now cheaper.`;
+        } else {
+            sinkStatus.textContent = `Need ${cost - earnings} more beans for Latte Lab.`;
+        }
+        updateStats();
+    });
+
+    updateStats();
+</script>
+</body>
+</html>
