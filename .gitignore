@@ -1,0 +1,18 @@
+# local artifacts / downloads
+.artifacts/
+proof/*.zip
+
+# credentials (never commit)
+credentials/*.env
+credentials/**/*.env
+*.env
+
+# OpenClaw / local state
+.clawhub/
+.openclaw/
+*.log
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vercel/
