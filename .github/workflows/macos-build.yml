@@ -1,0 +1,25 @@
+name: Breeze Budgeter macOS CI
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch: {}
+
+jobs:
+  mac_build:
+    name: Dry-run macOS build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |-
+          brew tap homebrew/cask
+          brew install swiftlint || true
+      - name: Run mac_build.sh (dry run)
+        run: |
+          chmod +x breeze/scripts/mac_build.sh
+          ./breeze/scripts/mac_build.sh dry BreezeBudgeter
+      - name: Run testflight upload (dry-run)
+        run: |
+          chmod +x breeze/scripts/mac_testflight_upload.sh
+          ./breeze/scripts/mac_testflight_upload.sh dry com.henrytheeighth.breezebudgeter APPLE_API_KEY

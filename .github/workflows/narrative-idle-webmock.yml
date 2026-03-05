@@ -1,0 +1,22 @@
+name: Narrative Idle Webmock CI
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Zip narrative idle web mock
+        run: |
+          cd ${{ github.workspace }}
+          zip -r narrative-idle-webmock.zip breeze/game-lab/narrative-idle/web-mock
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: narrative-idle-webmock
+          path: narrative-idle-webmock.zip
