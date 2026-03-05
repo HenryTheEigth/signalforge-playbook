@@ -1,0 +1,5 @@
+date: 2026-03-05T12:22:29+01:00
+run_id: 22715526014
+run_url: https://github.com/HenryTheEigth/signalforge-playbook/actions/runs/22715526014
+artifact_path: .artifacts/narrative-idle-webmock/narrative-idle-webmock.zip
+sha256: 6c9ca073d4204c6cec7b0c61b962812e9bfa842bbae11b4a93e7ad6ad5b5fe75
